@@ -1,7 +1,5 @@
-# lib/task_manager.rb
-
 class TaskManager
-  attr_accessor :tasks  # example: using attr_accessor for @tasks
+  attr_reader :tasks
 
   def initialize
     @tasks = []
@@ -9,6 +7,10 @@ class TaskManager
 
   def add_task(task)
     @tasks << task
+  end
+
+  def delete_task(index)
+    @tasks.delete_at(index)
   end
 
   def list_tasks

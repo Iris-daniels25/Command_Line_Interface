@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Task Manager</title>
+
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+  <main class="task-manager">
+    <header>
+      <p class="eyebrow">Ruby + Sinatra</p>
+      <h1>Task Manager</h1>
+      <p>Organize your tasks and keep track of what needs to be done.</p>
+    </header>
+
+    <form action="/tasks" method="post" class="task-form">
+      <label for="task">New task</label>
+
+      <div class="input-group">
+        <input
+          type="text"
+          id="task"
+          name="task"
+          placeholder="Enter a task..."
+          required
+        >
+
+        <button type="submit">Add Task</button>
+      </div>
+    </form>
+
+    <section class="task-list">
+      <h2>Your Tasks</h2>
+
+      <% if @tasks.empty? %>
+        <p class="empty-state">No tasks yet. Add your first task above.</p>
+      <% else %>
+        <ul>
+          <% @tasks.each_with_index do |task, index| %>
+            <li>
+              <span><%= task %></span>
+
+              <form action="/tasks/<%= index %>/delete" method="post">
+                <button type="submit" class="delete-button">
+                  Delete
+                </button>
+              </form>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </section>
+  </main>
+</body>
+</html>
