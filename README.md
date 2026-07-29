@@ -1,131 +1,158 @@
-# Task Manager CLI (Ruby)
+# ✅ TaskFlow – Ruby Task Manager
 
-A command-line task management application built in Ruby that allows users to create and organize tasks through an interactive terminal interface.
-
-This project was developed to strengthen my understanding of object-oriented programming, user input handling, loops, conditional logic, and modular application design.
+A modern task management application built with **Ruby**, **Sinatra**, **ERB**, **HTML**, and **CSS**. Originally developed as a command-line application, TaskFlow was expanded into a responsive web application featuring task organization, priority tracking, and due-date management.
 
 ---
 
-## Demo
+## 🎥 Demo
 
-![Task Manager CLI Demo](images/task-manager-demo.png)
-
----
-
-## Features
-
-* Add new tasks
-* View existing tasks
-* Interactive command-line interface
-* User-friendly menu system
-* Input validation for supported commands
-* Object-oriented design using a dedicated Task Manager class
+<p align="center">
+  <img src="images/task-manager-demo.gif" alt="TaskFlow Demo" width="700">
+</p>
 
 ---
 
-## Technologies Used
+## ✨ Features
+
+* 📝 Add new tasks
+* 🚦 Assign Low, Medium, or High priority
+* 📅 Set due dates using a calendar picker
+* ✅ Mark tasks as completed
+* 🗑 Delete tasks
+* 📊 Live task counter
+* 📱 Responsive layout for desktop and mobile
+* 🎨 Modern pastel-inspired user interface
+* 💎 Clean dashboard-style design
+
+---
+
+## 🛠 Technologies Used
 
 * Ruby
-* Object-Oriented Programming (OOP)
-* Command Line Interface (CLI)
+* Sinatra
+* ERB Templates
+* HTML5
+* CSS3
+* Git
+* GitHub
 
 ---
 
-## Concepts Demonstrated
-
-### Object-Oriented Programming
-
-The application uses a dedicated `TaskManager` class to organize application functionality and maintain task data.
-
-### User Input Handling
-
-The program accepts user commands and responds appropriately using conditional logic and control flow.
-
-### Loops
-
-A continuous menu system allows users to interact with the application until they choose to exit.
-
-### Modular Design
-
-The project separates functionality into multiple files using:
-
-```ruby
-require_relative 'lib/task_manager'
-```
-
-This improves maintainability and code organization.
-
----
-
-## Example Usage
+## 📁 Project Structure
 
 ```text
-Welcome to the Task Manager CLI!
-
-Type 'add' to add a task, 'list' to see all tasks, or 'exit' to quit.
-
-> add
-
-Enter a task description: Update portfolio website
-
-Task 'Update portfolio website' added.
-
-> add
-
-Enter a task description: Complete Ansible lab
-
-Task 'Complete Ansible lab' added.
-
-> list
-
-Here are your tasks:
-
-1. Update portfolio website
-2. Complete Ansible lab
-
-> exit
-
-Goodbye!
+Command_Line_Interface/
+├── app.rb
+├── Gemfile
+├── Gemfile.lock
+├── lib/
+│   └── task_manager.rb
+├── public/
+│   ├── styles.css
+│   └── script.js
+├── views/
+│   └── index.erb
+├── images/
+│   ├── task-manager-demo.gif
+│   └── screenshots...
+├── README.md
+└── main.rb
 ```
 
 ---
 
-## How to Run
+## 🚀 Getting Started
 
-### Verify Ruby Installation
+### Clone the repository
 
 ```bash
-ruby -v
+git clone https://github.com/Iris-daniels25/Command_Line_Interface.git
 ```
 
-### Run the Application
+### Navigate into the project
+
+```bash
+cd Command_Line_Interface
+```
+
+### Install dependencies
+
+```bash
+bundle install
+```
+
+### Start the application
+
+```bash
+ruby app.rb
+```
+
+Open your browser and visit:
+
+```text
+http://localhost:4567
+```
+
+---
+
+## 💻 Command-Line Version
+
+This repository also includes the original Ruby command-line interface.
+
+Run it with:
 
 ```bash
 ruby main.rb
 ```
 
----
-
-## Future Improvements
-
-* Delete tasks
-* Mark tasks as completed
-* Save tasks to a file
-* Add due dates and priorities
-* Search and filter tasks
-* Persistent storage using JSON or SQLite
+The CLI version demonstrates the original object-oriented implementation before the project was expanded into a web application.
 
 ---
 
-## Author
+## 🎯 Future Improvements
+
+* 💾 SQLite database persistence
+* ✏️ Edit existing tasks
+* 🏷 Task categories
+* 🔍 Search and filtering
+* 📅 Monthly calendar view
+* 🌙 Dark mode
+* 📈 Progress dashboard
+* 🔔 Due date reminders
+* ☁️ Cloud deployment
+
+---
+
+## 📸 Screenshots
+
+Add screenshots of:
+
+* Dashboard
+* Adding a task
+* Priority levels
+* Completed task
+* Mobile layout
+
+Example:
+
+```md
+![Dashboard](images/dashboard.png)
+
+![Task List](images/task-list.png)
+```
+
+---
+
+## 👩‍💻 Author
 
 **Iris Daniels**
 
-Computing Student | IT Professional
+* Portfolio: https://irisbuilds.tech
+* GitHub: https://github.com/Iris-daniels25
+* LinkedIn: https://www.linkedin.com/in/iris-daniels-m/
 
-📧 [idaniel5@depaul.edu](mailto:idaniel5@depaul.edu)
+---
 
-🔗 LinkedIn: https://www.linkedin.com/in/iris-daniels-m
+## 📄 License
 
-🌐 Portfolio: https://irisbuilds.tech
-
+This project is licensed under the MIT License.

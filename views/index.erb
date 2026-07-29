@@ -2,58 +2,264 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Task Manager</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap"
+    rel="stylesheet"
+  >
 
   <link rel="stylesheet" href="/styles.css">
 </head>
 
 <body>
-  <main class="task-manager">
-    <header>
-      <p class="eyebrow">Ruby + Sinatra</p>
-      <h1>Task Manager</h1>
-      <p>Organize your tasks and keep track of what needs to be done.</p>
-    </header>
+  <main class="app-shell">
+    <section class="task-card">
+      <header class="app-header">
+        <div class="header-copy">
+          <p class="eyebrow">Ruby + Sinatra</p>
 
-    <form action="/tasks" method="post" class="task-form">
-      <label for="task">New task</label>
+          <h1>My Task List</h1>
 
-      <div class="input-group">
-        <input
-          type="text"
-          id="task"
-          name="task"
-          placeholder="Enter a task..."
-          required
+          <p class="subtitle">
+            Organize your priorities, schedule due dates, and make
+            progress one task at a time.
+          </p>
+        </div>
+
+        <div class="task-count">
+          <span><%= @tasks.length %></span>
+
+          <small>
+            <%= @tasks.length == 1 ? "task" : "tasks" %>
+          </small>
+        </div>
+      </header>
+
+      <form
+        action="/tasks"
+        method="post"
+        class="task-form"
+      >
+        <div class="form-field task-description-field">
+          <label for="task">Task description</label>
+
+          <input
+            type="text"
+            id="task"
+            name="task"
+            placeholder="What needs to be done?"
+            autocomplete="off"
+            required
+          >
+        </div>
+
+        <div class="task-options">
+          <div class="form-field">
+            <label for="priority">Priority level</label>
+
+            <select
+              id="priority"
+              name="priority"
+            >
+              <option value="low">
+                Low priority
+              </option>
+
+              <option
+                value="medium"
+                selected
+              >
+                Medium priority
+              </option>
+
+              <option value="high">
+                High priority
+              </option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="due_date">Due date</label>
+
+            <input
+              type="date"
+              id="due_date"
+              name="due_date"
+              min="<%= @today %>"
+            >
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="add-button"
         >
+          <span aria-hidden="true">+</span>
+          Add Task
+        </button>
+      </form>
 
-        <button type="submit">Add Task</button>
-      </div>
-    </form>
+      <section class="task-list-section">
+        <div class="section-heading">
+          <div>
+            <h2>Current Tasks</h2>
 
-    <section class="task-list">
-      <h2>Your Tasks</h2>
+            <p>
+              Review your tasks, priorities, and due dates.
+            </p>
+          </div>
+        </div>
 
-      <% if @tasks.empty? %>
-        <p class="empty-state">No tasks yet. Add your first task above.</p>
-      <% else %>
-        <ul>
-          <% @tasks.each_with_index do |task, index| %>
-            <li>
-              <span><%= task %></span>
+        <% if @tasks.empty? %>
+          <div class="empty-state">
+            <div
+              class="empty-icon"
+              aria-hidden="true"
+            >
+              ✓
+            </div>
 
-              <form action="/tasks/<%= index %>/delete" method="post">
-                <button type="submit" class="delete-button">
-                  Delete
-                </button>
-              </form>
-            </li>
-          <% end %>
-        </ul>
-      <% end %>
+            <h3>No tasks yet</h3>
+
+            <p>
+              Add your first task above to get started.
+            </p>
+          </div>
+        <% else %>
+          <ul class="task-list">
+            <% @tasks.each_with_index do |task, index| %>
+              <%
+                has_due_date = !task[:due_date].to_s.empty?
+
+                overdue =
+                  !task[:completed] &&
+                  has_due_date &&
+                  Date.parse(task[:due_date]) < @today
+              %>
+
+              <li
+                class="
+                  task-item
+                  <%= "completed" if task[:completed] %>
+                  <%= "task-overdue" if overdue %>
+                "
+              >
+                <form
+                  action="/tasks/<%= index %>/toggle"
+                  method="post"
+                  class="toggle-form"
+                >
+                  <button
+                    type="submit"
+                    class="complete-button"
+                    aria-label="
+                      <%= task[:completed] ? "Mark incomplete" : "Mark complete" %>:
+                      <%= task[:description] %>
+                    "
+                  >
+                    <% if task[:completed] %>
+                      <span aria-hidden="true">✓</span>
+                    <% end %>
+                  </button>
+                </form>
+
+                <div class="task-details">
+                  <span class="task-text">
+                    <%= task[:description] %>
+                  </span>
+
+                  <div class="task-metadata">
+                    <span
+                      class="
+                        priority-badge
+                        priority-<%= task[:priority] %>
+                      "
+                    >
+                      <%= task[:priority].capitalize %> priority
+                    </span>
+
+                    <% if has_due_date %>
+                      <span
+                        class="
+                          due-date
+                          <%= "overdue" if overdue %>
+                        "
+                      >
+                        <% if overdue %>
+                          Overdue:
+                        <% elsif task[:completed] %>
+                          Scheduled:
+                        <% else %>
+                          Due:
+                        <% end %>
+
+                        <%= Date.parse(task[:due_date]).strftime("%b %-d, %Y") %>
+                      </span>
+                    <% else %>
+                      <span class="due-date">
+                        No due date
+                      </span>
+                    <% end %>
+
+                    <% if task[:completed] %>
+                      <span class="status-badge status-completed">
+                        Completed
+                      </span>
+                    <% elsif overdue %>
+                      <span class="status-badge status-overdue">
+                        Overdue
+                      </span>
+                    <% else %>
+                      <span class="status-badge status-active">
+                        Active
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+
+                <form
+                  action="/tasks/<%= index %>/delete"
+                  method="post"
+                  class="delete-form"
+                >
+                  <button
+                    type="submit"
+                    class="delete-button"
+                    aria-label="Delete <%= task[:description] %>"
+                    title="Delete task"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </form>
+              </li>
+            <% end %>
+          </ul>
+        <% end %>
+      </section>
+
+      <footer class="app-footer">
+        <p>
+          Built with Ruby, Sinatra, ERB, HTML, and CSS
+        </p>
+      </footer>
     </section>
   </main>
+
+  <script src="/script.js"></script>
 </body>
 </html>
